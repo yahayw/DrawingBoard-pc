@@ -21,14 +21,14 @@
 			border: 0;
 			background: transparent;
 			cursor: pointer;
-			/*border: 1px solid;*/
 			border-radius: 10%;
 			display: inline-block;
 			margin: 20px 0;
 			box-shadow: 0 2px 7px #FCBC5E;
-		}
-		.btns>button.active {
 			outline: none;
+		}
+
+		.btns>button.active{
 			box-shadow: 0 2px 7px #2884CD;
 			background: #FFFFFF;
 		}

@@ -1,13 +1,15 @@
 let canv = document.getElementById("canvas");
-let clearBtn = document.getElementsByClassName("clear");
-let eraserBtn = document.getElementsByClassName("eraser");
+let clearBtn = document.getElementsByClassName("clear")[0];
+let eraserBtn = document.getElementsByClassName("eraser")[0];
 let ctx = canv.getContext("2d");
 let isPainting = false;
 let isEraser = false;
+let isClear = false;
 let lastPosition = {"x":undefined,"y":undefined};
 canv.width = document.documentElement.clientWidth;
 canv.height = document.documentElement.clientHeight;
-canv.addEventListener("mousedown",function(e){	
+canv.onmousedown = function(e){
+	clearBtn.classList.remove("active");
 	lastPosition = {"x":e.clientX,"y":e.clientY};
 	if(isEraser){
 		clearLine(lastPosition.x,lastPosition.y);
@@ -15,30 +17,40 @@ canv.addEventListener("mousedown",function(e){
 	else{
 		isPainting = true;
 	}
-},false)
-canv.addEventListener("mousemove",function(e){
-	let nowPoition = {"x":e.clientX,"y":e.clientY};
-	if(isPainting){
-		console.log("painting");
-		drawLine(nowPoition.x,nowPoition.y,lastPosition.x,lastPosition.y);
-	}else if(isEraser){
-		console.log("eraser!")
-		clearLine(nowPoition.x,nowPoition.y);
+	canv.onmousemove = function(e){
+		let nowPoition = {"x":e.clientX,"y":e.clientY};
+		if(isPainting){
+			drawLine(nowPoition.x,nowPoition.y,lastPosition.x,lastPosition.y);
+		}else if(isEraser){
+			clearLine(nowPoition.x,nowPoition.y);
+		}
+		lastPosition = nowPoition;
 	}
-	lastPosition = nowPoition;
-},false)
-canv.addEventListener("mouseup",function(e){
+}
+canv.onmouseup = function(){
 	isPainting = false;
 	lastPosition.x = undefined;
 	lastPosition.y = undefined;
-},false)
+}
 eraserBtn.onclick = function(e){
-	isEraser = true;
-	e.target.classList.toggle("active");
+	clearBtn.classList.remove("active");
+	if(!isEraser){
+		e.currentTarget.classList.add("active");
+	}
+	else{
+		e.currentTarget.classList.remove("active");
+	}	
+	isEraser = !isEraser;	
 }
 clearBtn.onclick = function(e){
-	ctx.clearRect(0,0,canv.width,canv.height);	
-	e.target.classList.toggle("active");
+	eraserBtn.classList.remove("active");
+	isEraser = false;
+	isClear = !isClear;	
+	if(isClear){			
+	    e.currentTarget.classList.add("active");
+		ctx.clearRect(0,0,canv.width,canv.height);
+	}
+	isClear = !isClear;	
 }
 // clearBtn.addEventListener("click",function(e){
 // 	console.log(0);
