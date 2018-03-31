@@ -28,7 +28,7 @@
 			outline: none;
 		}
 
-		.btns>button.active{
+		.btns>button:focus{
 			box-shadow: 0 2px 7px #2884CD;
 			background: #FFFFFF;
 		}
